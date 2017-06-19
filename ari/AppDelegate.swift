@@ -7,17 +7,43 @@
 //
 
 import UIKit
+import PubNub
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PNObjectEventListener {
 
     var window: UIWindow?
 
+    var client:PubNub!
+    
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let configuration = PNConfiguration(publishKey: Consts.PUBLISH_KEY,
+                                            subscribeKey: Consts.SUBSCRIBER_KEY);
+        self.client = PubNub.clientWithConfiguration(configuration);
+        self.client.addListener(self);
+        self.client.subscribeToChannels(["my_channel1","my_channel2"], withPresence: false);
+        
         return true
     }
+    
+//    func client(_ client: PubNub, didReceiveMessage message: PNMessageResult) {
+//        
+//        // Handle new message stored in message.data.message
+//        if message.data.channel != message.data.subscription {
+//            
+//            // Message has been received on channel group stored in message.data.subscription.
+//        }
+//        else {
+//            
+//            // Message has been received on channel stored in message.data.channel.
+//        }
+//        
+//        print("Received message: \(message.data.message) on channel \(message.data.channel) " +
+//            "at \(message.data.timetoken)")
+//    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

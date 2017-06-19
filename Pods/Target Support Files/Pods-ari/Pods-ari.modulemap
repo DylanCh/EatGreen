@@ -1,0 +1,6 @@
+framework module Pods_ari {
+  umbrella header "Pods-ari-umbrella.h"
+
+  export *
+  module * { export * }
+}
